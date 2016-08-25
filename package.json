@@ -1,0 +1,16 @@
+{
+  "name": "stream-to-python",
+  "version": "0.1.0",
+  "description": "Use a python script as a through stream",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "readable-stream": "^2.1.5",
+    "split2": "^2.1.0",
+    "through2": "^2.0.1"
+  }
+}
