@@ -3,22 +3,21 @@
 const { spawn } = require('child_process')
 
 const duplexify = require('duplexify')
-const { Writable } = require('readable-stream')
 const ndjson = require('ndjson')
 
-const worker = spawn('./entropy.py')
+const throughProcess = (command, args = [], opts = {}) => {
+  const cp = spawn(command, args, opts)
 
-worker.stderr.on('data', (data) => {
-  console.log(`stderr: ${data}`)
-})
+  const dup = duplexify.obj(
+    ndjson.serialize().on('data', json => cp.stdin.write(json)),
+    cp.stdout.pipe(ndjson.parse())
+  )
+  dup.cp = cp
 
-worker.on('close', (code) => {
-  console.log(`child process exited with code ${code}`)
-})
+  return dup
+}
 
-worker.on('error', function(err) {
-  console.log('received an error: ', err)
-})
+// === EXAMPLE ===
 
 const objs = [{
   'foo': 1
@@ -28,23 +27,15 @@ const objs = [{
   'foo': 3
 }]
 
-const dup = duplexify.obj(
-  new Writable({
-    write(obj, enc, next) {
-      const ndjsonLine = JSON.stringify(obj) + '\n'
-      worker.stdin.write(ndjsonLine)
-      next()
-    },
-    objectMode: true
-  }),
-  worker.stdout.pipe(ndjson.parse())
-)
+const chugger = throughProcess('./entropy.py')
+
+chugger.on('data', function(data) {
+  console.log('Received : ', data)
+})
 
 for (const obj of objs) {
   console.log('Sent     : ', obj)
-  dup.write(obj)
+  chugger.write(obj)
 }
 
-dup.on('data', function(data) {
-  console.log('Received : ', data)
-})
+// chugger.end()
