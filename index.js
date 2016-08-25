@@ -1,9 +1,10 @@
 'use strict'
 
 const { spawn } = require('child_process')
-const split = require('split2')
-const { Readable, Writable } = require('readable-stream')
-const through = require('through2')
+
+const duplexify = require('duplexify')
+const { Writable } = require('readable-stream')
+const ndjson = require('ndjson')
 
 const worker = spawn('./entropy.py')
 
@@ -19,17 +20,6 @@ worker.on('error', function(err) {
   console.log('received an error: ', err)
 })
 
-const computeStream = through.obj(function (obj, enc, next) {
-  const ndjsonLine = JSON.stringify(obj) + '\n'
-
-  worker.stdin.write(ndjsonLine)
-  next()
-})
-
-computeStream.on('error', function (err) {
-  console.log('ERROR: ', err)
-})
-
 const objs = [{
   'foo': 1
 }, {
@@ -38,12 +28,23 @@ const objs = [{
   'foo': 3
 }]
 
+const dup = duplexify.obj(
+  new Writable({
+    write(obj, enc, next) {
+      const ndjsonLine = JSON.stringify(obj) + '\n'
+      worker.stdin.write(ndjsonLine)
+      next()
+    },
+    objectMode: true
+  }),
+  worker.stdout.pipe(ndjson.parse())
+)
+
 for (const obj of objs) {
   console.log('Sent     : ', obj)
-  computeStream.write(obj)
+  dup.write(obj)
 }
 
-worker.stdout.pipe(split()).on('data', function(data) {
-  const obj = JSON.parse(data)
-  console.log('Received : ', obj)
+dup.on('data', function(data) {
+  console.log('Received : ', data)
 })

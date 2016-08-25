@@ -9,6 +9,8 @@
   "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "duplexify": "^3.4.5",
+    "ndjson": "^1.4.3",
     "readable-stream": "^2.1.5",
     "split2": "^2.1.0",
     "through2": "^2.0.1"
