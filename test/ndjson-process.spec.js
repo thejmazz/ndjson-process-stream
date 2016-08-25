@@ -1,9 +1,10 @@
 'use strict'
 
-const throughput = require('.')
-
-const { assert } = require('chai')
+const path = require('path')
 const intoStream = require('into-stream')
+const { assert } = require('chai')
+
+const throughput = require('../')
 
 const data = [
   { foo: 1 },
@@ -18,12 +19,15 @@ describe('throughProcess', function() {
     let num = 1
 
     intoStream.obj(data)
-      .pipe(throughput('./foo_doubler.py'))
+      .pipe(throughput(path.resolve(__dirname, 'foo_doubler.py')))
       .on('data', function(data) {
         assert.equal(num*2, data.foo)
         num++
 
-        if (num === 6) done()
+        if (num === 6) {
+          this.cp.kill()
+          done()
+        }
       })
   })
 })

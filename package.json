@@ -4,7 +4,8 @@
   "description": "Use a python script as a through stream",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test/**/*.spec.js",
+    "coverage": "istanbul cover _mocha --report lcovonly -- -R spec && rm -rf ./coverage"
   },
   "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
   "license": "MIT",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "into-stream": "^2.0.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.2"
   }
 }
