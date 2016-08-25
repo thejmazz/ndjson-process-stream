@@ -17,25 +17,4 @@ const throughProcess = (command, args = [], opts = {}) => {
   return dup
 }
 
-// === EXAMPLE ===
-
-const objs = [{
-  'foo': 1
-}, {
-  'foo': 2
-}, {
-  'foo': 3
-}]
-
-const chugger = throughProcess('./entropy.py')
-
-chugger.on('data', function(data) {
-  console.log('Received : ', data)
-})
-
-for (const obj of objs) {
-  console.log('Sent     : ', obj)
-  chugger.write(obj)
-}
-
-// chugger.end()
+module.exports = throughProcess

@@ -4,12 +4,17 @@
   "description": "Use a python script as a through stream",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test.js"
   },
   "author": "Julian Mazzitelli <mazzitelli.julian@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "duplexify": "^3.4.5",
     "ndjson": "^1.4.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "into-stream": "^2.0.1",
+    "mocha": "^3.0.2"
   }
 }
