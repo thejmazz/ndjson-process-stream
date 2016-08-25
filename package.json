@@ -1,6 +1,6 @@
 {
   "name": "ndjson-process-stream",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "ndjson duplex stream for child processes",
   "main": "index.js",
   "scripts": {
