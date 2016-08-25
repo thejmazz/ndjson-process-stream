@@ -1,7 +1,7 @@
 {
-  "name": "stream-to-python",
-  "version": "0.1.0",
-  "description": "Use a python script as a through stream",
+  "name": "ndjson-process-stream",
+  "version": "0.0.0",
+  "description": "ndjson duplex stream for child processes",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/**/*.spec.js",
@@ -18,5 +18,23 @@
     "into-stream": "^2.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thejmazz/ndjson-process-stream.git"
+  },
+  "keywords": [
+    "ndjson",
+    "stream",
+    "through",
+    "child",
+    "process"
+  ],
+  "bugs": {
+    "url": "https://github.com/thejmazz/ndjson-process-stream/issues"
+  },
+  "homepage": "https://github.com/thejmazz/ndjson-process-stream#readme"
 }
