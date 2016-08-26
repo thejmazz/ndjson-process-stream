@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python -u
 
 import sys
 import json
@@ -14,7 +14,7 @@ try:
         if buff.endswith('\n'):
             results = compute(json.loads(buff))
             print(json.dumps(results))
-            sys.stdout.flush()
+            # sys.stdout.flush()
             buff = ''
 except KeyboardInterrupt:
     sys.stdout.flush()
